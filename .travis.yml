@@ -71,6 +71,7 @@ jobs:
         - XCODE_ACTION=build
         - XCODE_DESTINATION="platform=watchOS Simulator,name=Apple Watch - 38mm,OS=2.2"
     - script:
+      - if [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then exit 0; fi
       - pod repo update --silent
       - pod lib lint ReactiveSwift.podspec
       env:
@@ -124,15 +125,21 @@ jobs:
         - JOB=SWIFTPM_SWIFT_4_LINUX
         - SWIFT_VERSION=DEVELOPMENT-SNAPSHOT-2017-07-13-a
     - stage: prepare carthage cache
-      script: carthage build --cache-builds
+      script:
+        - if [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then exit 0; fi
+        - carthage build --cache-builds
     - stage: carthage
       script:
+        - if [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then exit 0; fi
         - carthage build --cache-builds --no-skip-current --platform mac
     - script:
+        - if [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then exit 0; fi
         - carthage build --cache-builds --no-skip-current --platform iOS
     - script:
+        - if [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then exit 0; fi
         - carthage build --cache-builds --no-skip-current --platform tvOS
     - script:
+        - if [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then exit 0; fi
         - carthage build --cache-builds --no-skip-current --platform watchOS
     - stage: deploy
       before_install: true
